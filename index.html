@@ -1,28 +1,406 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sagi Polaczek</title>
+    
+    <meta name="description" content="Sagi Polaczek - AI Researcher working on deep learning for creative applications">
+    <meta property="og:title" content="Sagi Polaczek">
+    <meta property="og:description" content="AI Researcher - Deep Learning for Creative Applications">
+    <meta property="og:image" content="https://sagipolaczek.github.io/assets/me.jpeg">
+    <meta property="og:url" content="https://sagipolaczek.github.io">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://sagipolaczek.github.io/assets/me.jpeg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        :root {
+            --bg-primary: #faf9f7;
+            --bg-secondary: #f0ede8;
+            --text-primary: #2d2a26;
+            --text-secondary: #5a5650;
+            --accent: #8b4049;
+            --accent-hover: #a34d57;
+            --border: #d8d4ce;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Source Sans 3', -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-weight: 400;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Header */
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 2.5rem;
+        }
+        
+        .profile-image {
+            width: 220px;
+            height: auto;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 2px solid var(--border);
+        }
+        
+        .header-text h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 3.2rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .header-text .tagline {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
             max-width: 600px;
-            margin: 40px auto;
-            line-height: 1.6;
         }
-        a {
-            color: #0066cc;
+        
+        .header-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .header-links a {
+            color: var(--text-secondary);
             text-decoration: none;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
         }
-        a:hover {
-            text-decoration: underline;
+        
+        .header-links a:hover {
+            color: var(--accent);
+        }
+        
+        .header-links i {
+            font-size: 1.1rem;
+        }
+        
+        .header-links .logo-icon {
+            width: 1.1rem;
+            height: 1.1rem;
+            object-fit: contain;
+        }
+        
+        /* Main content */
+        main {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        /* Publication cards */
+        .publications {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+        
+        .publication-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .publication-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        }
+        
+        .publication-image {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            border-radius: 6px;
+            background: var(--bg-primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .publication-image.large {
+            max-width: 900px;
+            max-height: 500px;
+        }
+        
+        .publication-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .publication-venue {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .publication-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+        
+        .publication-authors {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .publication-authors .me {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .publication-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .pub-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.45rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .pub-link:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+        
+        .pub-link i {
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .publication-image {
+                max-height: 280px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .header-text h1 {
+                font-size: 2.4rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1.5rem;
+            }
+            
+            .header-links {
+                justify-content: center;
+            }
+            
+            .profile-image {
+                width: 180px;
+                height: auto;
+            }
+            
+            .publication-card {
+                padding: 1.5rem;
+            }
+            
+            .publication-links {
+                gap: 0.75rem;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    
-    <p>Doing cool AI stuff. Spent some time on medical imaging and drug discovery at IBM Research. Now I'm bringing deep learning to creative applications. Worked on <a href="https://sagipolaczek.github.io/NeuralSVG/" target="_blank"><b>NeuralSVG</b></a> [🔥ICCV]. Currently cooking up video-related projects at LipDub.ai [MARZ VFX] and partially work on different diversed projects as well.</p>
-    
-    <p>Let's talk: sagi.polaczek@gmail.com</p>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <img src="assets/me.jpeg" alt="Sagi Polaczek" class="profile-image">
+                <div class="header-text">
+                    <h1>Sagi Polaczek</h1>
+                    <p class="tagline">
+                        Doing cool AI stuff. Grateful for anyone who I've worked with and learned from. Excited for what's next.
+                    </p>
+                    <div class="header-links">
+                        <a href="mailto:sagi.polaczek@gmail.com">
+                            <i class="fas fa-envelope"></i>
+                            sagi.polaczek@gmail.com
+                        </a>
+                        <a href="https://github.com/SagiPolaczek" target="_blank">
+                            <i class="fab fa-github"></i>
+                            GitHub
+                        </a>
+                        <a href="https://x.com/PolaczekSagi" target="_blank">
+                            <img src="assets/logos/x-log.svg" alt="X" class="logo-icon">
+                        </a>
+                        <a href="https://www.linkedin.com/in/sagipolaczek/" target="_blank">
+                            <img src="assets/logos/linkedin-logo.svg" alt="LinkedIn" class="logo-icon" style="width: 1.4rem; height: 1.4rem;">
+                            LinkedIn
+                        </a>
+                        <a href="https://scholar.google.com/citations?user=G8r2SXIAAAAJ&hl=en" target="_blank">
+                            <i class="ai ai-google-scholar" style="font-size: 1.4rem;"></i>
+                            Scholar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <h2 class="section-title">Publications</h2>
+            
+            <div class="publications">
+                <!-- Sync-LoRA -->
+                <article class="publication-card">
+                    <video src="assets/SyncLoRA_teaser.mp4" autoplay muted loop playsinline preload="metadata" class="publication-image"></video>
+                    <div class="publication-content">
+                        <h3 class="publication-title">In-Context Sync-LoRA for Portrait Video Editing</h3>
+                        <p class="publication-authors">
+                            <span class="me">Sagi Polaczek</span>, 
+                            Or Patashnik, 
+                            Ali Mahdavi-Amiri, 
+                            Daniel Cohen-Or
+                        </p>
+                        <div class="publication-links">
+                            <a href="https://sagipolaczek.github.io/Sync-LoRA/" class="pub-link" target="_blank">
+                                <i class="fas fa-globe"></i>
+                                Project
+                            </a>
+                            <a href="http://arxiv.org/abs/2512.03013" class="pub-link" target="_blank">
+                                <i class="ai ai-arxiv"></i>
+                                arXiv
+                            </a>
+                            <a href="https://github.com/SagiPolaczek/Sync-LoRA" class="pub-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                                Code
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                
+                <!-- NeuralSVG -->
+                <article class="publication-card">
+                    <img src="assets/NeuralSVG_teaser.png" alt="NeuralSVG teaser" class="publication-image large" loading="lazy">
+                    <div class="publication-content">
+                        <span class="publication-venue">ICCV 2025</span>
+                        <h3 class="publication-title">NeuralSVG: An Implicit Representation for Text-to-Vector Generation</h3>
+                        <p class="publication-authors">
+                            <span class="me">Sagi Polaczek</span>, 
+                            Yuval Alaluf, 
+                            Elad Richardson, 
+                            Yael Vinker, 
+                            Daniel Cohen-Or
+                        </p>
+                        <div class="publication-links">
+                            <a href="https://sagipolaczek.github.io/NeuralSVG/" class="pub-link" target="_blank">
+                                <i class="fas fa-globe"></i>
+                                Project
+                            </a>
+                            <a href="https://arxiv.org/abs/2501.03992" class="pub-link" target="_blank">
+                                <i class="ai ai-arxiv"></i>
+                                arXiv
+                            </a>
+                            <a href="https://github.com/SagiPolaczek/NeuralSVG" class="pub-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                                Code
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </main>
+        
+        <footer>
+            <p>© 2024 Sagi Polaczek</p>
+        </footer>
+    </div>
 </body>
 </html>
