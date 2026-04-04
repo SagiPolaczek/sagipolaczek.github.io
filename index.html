@@ -209,6 +209,69 @@
             filter: invert(1);
         }
 
+        /* Publication entries — distinct from jobs */
+        .tl-entry.pub {
+            margin-bottom: 2.5rem;
+        }
+        .tl-entry.pub .tl-dot {
+            border-color: var(--border);
+            width: 10px;
+            height: 10px;
+            left: -22px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .tl-entry.pub .tl-date {
+            position: static;
+            width: auto;
+            text-align: center;
+            font-size: 0.82rem;
+            padding-top: 6px;
+            color: var(--text-sub);
+        }
+        .tl-entry.pub .tl-main {
+            gap: 16px;
+            align-items: stretch;
+        }
+        .tl-entry.pub .pub-preview {
+            flex: 0 0 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tl-entry.pub .tl-logo {
+            flex: 1;
+            width: 160px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 0;
+        }
+        .tl-entry.pub .tl-logo img,
+        .tl-entry.pub .tl-logo video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
+        }
+        .tl-entry.pub .tl-body {
+            padding-top: 0;
+        }
+        .tl-entry.pub .tl-role {
+            font-size: 0.98rem;
+        }
+        .tl-entry.pub .tl-role a {
+            color: var(--text);
+        }
+        .tl-entry.pub .tl-role a:hover {
+            color: var(--accent);
+        }
+        .tl-entry.pub .tl-desc {
+            font-size: 0.88rem;
+            margin-top: 2px;
+        }
+
         /* Education entries — blue tone */
         .tl-entry.edu .tl-role {
             color: #2c5282;
@@ -423,50 +486,78 @@
         <main>
             <div class="timeline">
 
+                <!-- ── Mystery Paper ── -->
+                <div class="tl-entry pub" data-date="2026.04">
+                    <div class="tl-dot"></div>
+                    <div class="tl-main">
+                        <div class="pub-preview">
+                            <div class="tl-logo" style="background: var(--bg-warm); display:flex; align-items:center; justify-content:center;">
+                                <span style="font-size:1.5rem;">?</span>
+                            </div>
+                            <div class="tl-date">Apr 2026</div>
+                        </div>
+                        <div class="tl-body">
+                            <p class="tl-role">Coming soon... <span class="venue-badge">SIGGRAPH 2026</span></p>
+                            <p class="tl-desc">conditionally accepted. stay tuned :)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── Sync-LoRA ── -->
+                <div class="tl-entry pub" data-date="2025.12">
+                    <div class="tl-dot"></div>
+                    <div class="tl-main">
+                        <div class="pub-preview">
+                            <div class="tl-logo">
+                                <video src="assets/SyncLoRA_teaser.mp4" autoplay muted loop playsinline preload="metadata"></video>
+                            </div>
+                            <div class="tl-date">Dec 2025</div>
+                        </div>
+                        <div class="tl-body">
+                            <p class="tl-role"><a href="https://sagipolaczek.github.io/Sync-LoRA/" target="_blank">In-Context Sync-LoRA for Portrait Video Editing</a></p>
+                            <p class="tl-desc"><span class="me">Sagi Polaczek</span>, Or Patashnik, Ali Mahdavi-Amiri, Daniel Cohen-Or</p>
+                            <div class="sub-links">
+                                <a href="https://sagipolaczek.github.io/Sync-LoRA/" target="_blank"><i class="fas fa-globe"></i> Project</a>
+                                <a href="http://arxiv.org/abs/2512.03013" target="_blank"><i class="ai ai-arxiv"></i> arXiv</a>
+                                <a href="https://github.com/SagiPolaczek/Sync-LoRA" target="_blank"><i class="fab fa-github"></i> Code</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ── MARZ ── -->
                 <div class="tl-entry active" data-date="2025.04">
                     <div class="tl-date">2025 &ndash; present</div>
                     <div class="tl-dot"></div>
                     <div class="tl-main">
                         <div class="tl-logo" style="padding:0;">
-                            <img src="assets/logos/marz_logo.jpg" alt="MARZ" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                            <img src="assets/logos/marz_logo.jpg" alt="MARZ" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
                         </div>
                         <div class="tl-body">
                             <p class="tl-role">AI Research Scientist <span class="tl-org">&mdash; Monsters Aliens Robots Zombies (MARZ)</span></p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="tl-subs">
-                        <div class="tl-sub">
-                            <div class="tl-sub-icon" style="background: var(--bg-warm); display:flex; align-items:center; justify-content:center;">
-                                <span style="font-size:1.5rem;">?</span>
+                <!-- ── NeuralSVG ── -->
+                <div class="tl-entry pub" data-date="2025.01">
+                    <div class="tl-dot"></div>
+                    <div class="tl-main">
+                        <div class="pub-preview">
+                            <div class="tl-logo">
+                                <img src="assets/NeuralSVG_teaser.png" alt="NeuralSVG" loading="lazy">
                             </div>
-                            <div class="tl-sub-body">
-                                <p class="sub-title">
-                                    Coming soon...
-                                    <span class="venue-badge">SIGGRAPH 2026</span>
-                                </p>
-                                <p class="sub-authors">conditionally accepted. stay tuned :)</p>
+                            <div class="tl-date">Jan 2025</div>
+                        </div>
+                        <div class="tl-body">
+                            <p class="tl-role"><a href="https://sagipolaczek.github.io/NeuralSVG/" target="_blank">NeuralSVG: An Implicit Representation for Text-to-Vector Generation</a> <span class="venue-badge">ICCV 2025</span></p>
+                            <p class="tl-desc"><span class="me">Sagi Polaczek</span>, Yuval Alaluf, Elad Richardson, Yael Vinker, Daniel Cohen-Or</p>
+                            <div class="sub-links">
+                                <a href="https://sagipolaczek.github.io/NeuralSVG/" target="_blank"><i class="fas fa-globe"></i> Project</a>
+                                <a href="https://arxiv.org/abs/2501.03992" target="_blank"><i class="ai ai-arxiv"></i> arXiv</a>
+                                <a href="https://github.com/SagiPolaczek/NeuralSVG" target="_blank"><i class="fab fa-github"></i> Code</a>
                             </div>
                         </div>
-
-                        <div class="tl-sub">
-                            <div class="tl-sub-icon">
-                                <video src="assets/SyncLoRA_teaser.mp4" autoplay muted loop playsinline preload="metadata"></video>
-                            </div>
-                            <div class="tl-sub-body">
-                                <p class="sub-title">
-                                    <a href="https://sagipolaczek.github.io/Sync-LoRA/" target="_blank">In-Context Sync-LoRA for Portrait Video Editing</a>
-                                </p>
-                                <p class="sub-authors"><span class="me">Sagi Polaczek</span>, Or Patashnik, Ali Mahdavi-Amiri, Daniel Cohen-Or</p>
-                                <div class="sub-links">
-                                    <a href="https://sagipolaczek.github.io/Sync-LoRA/" target="_blank"><i class="fas fa-globe"></i> Project</a>
-                                    <a href="http://arxiv.org/abs/2512.03013" target="_blank"><i class="ai ai-arxiv"></i> arXiv</a>
-                                    <a href="https://github.com/SagiPolaczek/Sync-LoRA" target="_blank"><i class="fab fa-github"></i> Code</a>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 
@@ -494,26 +585,6 @@
                         </div>
                         <div class="tl-body">
                             <p class="tl-role">Deep Learning Engineer <span class="tl-org">&mdash; IBM Research</span></p>
-                        </div>
-                    </div>
-
-                    <div class="tl-subs">
-                        <div class="tl-sub">
-                            <div class="tl-sub-icon">
-                                <img src="assets/NeuralSVG_teaser.png" alt="NeuralSVG" loading="lazy">
-                            </div>
-                            <div class="tl-sub-body">
-                                <p class="sub-title">
-                                    <a href="https://sagipolaczek.github.io/NeuralSVG/" target="_blank">NeuralSVG: An Implicit Representation for Text-to-Vector Generation</a>
-                                    <span class="venue-badge">ICCV 2025</span>
-                                </p>
-                                <p class="sub-authors"><span class="me">Sagi Polaczek</span>, Yuval Alaluf, Elad Richardson, Yael Vinker, Daniel Cohen-Or</p>
-                                <div class="sub-links">
-                                    <a href="https://sagipolaczek.github.io/NeuralSVG/" target="_blank"><i class="fas fa-globe"></i> Project</a>
-                                    <a href="https://arxiv.org/abs/2501.03992" target="_blank"><i class="ai ai-arxiv"></i> arXiv</a>
-                                    <a href="https://github.com/SagiPolaczek/NeuralSVG" target="_blank"><i class="fab fa-github"></i> Code</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
