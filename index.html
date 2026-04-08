@@ -445,6 +445,20 @@
                 font-size: 0.9rem;
             }
             .tl-dot { display: none; }
+
+            /* Publications: compact horizontal layout on mobile */
+            .tl-entry.pub .tl-main {
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .tl-entry.pub .pub-preview {
+                flex: 0 0 96px;
+            }
+            .tl-entry.pub .tl-logo {
+                flex: 0 0 96px;
+                width: 96px;
+                height: 96px;
+            }
         }
     </style>
 </head>
@@ -556,7 +570,7 @@
                             <div class="sub-links">
                                 <a href="https://sagipolaczek.github.io/NeuralSVG/" target="_blank"><i class="fas fa-globe"></i> Project</a>
                                 <a href="https://arxiv.org/abs/2501.03992" target="_blank"><i class="ai ai-arxiv"></i> arXiv</a>
-                                <a href="https://github.com/SagiPolaczek/NeuralSVG" target="_blank"><i class="fab fa-github"></i> Code</a>
+                                <a href="https://github.com/SagiPolaczek/NeuralSVG" target="_blank"><i class="fab fa-github"></i> Code <span style="opacity:0.75;">⭐ 1.4k</span></a>
                             </div>
                         </div>
                     </div>
