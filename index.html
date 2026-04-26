@@ -404,6 +404,15 @@
             color: var(--accent);
             background: rgba(139,64,73,0.04);
         }
+        .sub-links a.disabled,
+        .sub-links a.disabled:hover {
+            color: var(--text-sub);
+            border-color: var(--border);
+            background: transparent;
+            opacity: 0.55;
+            pointer-events: none;
+            cursor: default;
+        }
         .sub-links a i {
             font-size: 0.92rem;
         }
@@ -500,19 +509,25 @@
         <main>
             <div class="timeline">
 
-                <!-- ── Mystery Paper ── -->
+                <!-- ── Linear Semantics (SIGGRAPH 2026) ── -->
                 <div class="tl-entry pub" data-date="2026.04">
                     <div class="tl-dot"></div>
                     <div class="tl-main">
                         <div class="pub-preview">
-                            <div class="tl-logo" style="background: var(--bg-warm); display:flex; align-items:center; justify-content:center;">
-                                <span style="font-size:1.5rem;">?</span>
+                            <div class="tl-logo">
+                                <video src="assets/LinearSemantics_teaser.mp4" autoplay muted loop playsinline preload="metadata"></video>
                             </div>
                             <div class="tl-date">Apr 2026</div>
                         </div>
                         <div class="tl-body">
-                            <p class="tl-role">Coming soon... <span class="venue-badge">SIGGRAPH 2026</span></p>
-                            <p class="tl-desc">conditionally accepted. stay tuned :)</p>
+                            <p class="tl-role">Video Analysis and Generation via a Semantic Progress Function <span class="venue-badge">SIGGRAPH 2026</span></p>
+                            <p class="tl-desc">Gal Metzer*, <span class="me">Sagi Polaczek*</span>, Ali Mahdavi-Amiri, Raja Giryes, Daniel Cohen-Or</p>
+                            <p class="tl-desc">Coming soon &mdash; conditionally accepted, stay tuned :)</p>
+                            <div class="sub-links">
+                                <a href="#" class="disabled" aria-disabled="true" tabindex="-1"><i class="fas fa-globe"></i> Project</a>
+                                <a href="#" class="disabled" aria-disabled="true" tabindex="-1"><i class="ai ai-arxiv"></i> arXiv</a>
+                                <a href="#" class="disabled" aria-disabled="true" tabindex="-1"><i class="fab fa-github"></i> Code</a>
+                            </div>
                         </div>
                     </div>
                 </div>
