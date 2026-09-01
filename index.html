@@ -84,13 +84,117 @@
             gap: 2.5rem;
         }
 
-        .profile-image {
+        .profile-melt {
+            position: relative;
             width: 240px;
-            height: auto;
-            border-radius: 8px;
-            object-fit: cover;
-            flex-shrink: 0;
+            flex: 0 0 240px;
+            align-self: flex-start;
+            overflow: hidden;
             border: 2px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-warm);
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        .profile-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .profile-melt-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .profile-melt.is-ready .profile-image {
+            opacity: 0;
+        }
+
+        .profile-melt.is-ready .profile-melt-canvas {
+            opacity: 1;
+        }
+
+        .mirror-bubble {
+            position: absolute;
+            z-index: 2;
+            display: block;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.88);
+            border-radius: 50%;
+            box-shadow:
+                inset -7px -9px 15px rgba(31,26,22,0.18),
+                inset 7px 8px 12px rgba(255,255,255,0.28),
+                0 8px 16px rgba(31,26,22,0.2);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            will-change: width, height, transform, opacity;
+        }
+
+        .mirror-bubble canvas {
+            position: relative;
+            z-index: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .mirror-bubble::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            border-radius: inherit;
+            background:
+                radial-gradient(circle at 31% 25%, rgba(255,255,255,0.2), transparent 24%),
+                radial-gradient(circle at 50% 52%, transparent 54%, rgba(190,225,235,0.13) 73%, rgba(255,255,255,0.38) 94%, rgba(45,35,30,0.16) 100%);
+            box-shadow:
+                inset 3px 4px 7px rgba(255,255,255,0.32),
+                inset -5px -7px 10px rgba(24,20,18,0.15);
+        }
+
+        .mirror-bubble::after {
+            content: '';
+            position: absolute;
+            z-index: 2;
+            top: 11%;
+            left: 17%;
+            width: 31%;
+            height: 18%;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            filter: blur(2px);
+            transform: rotate(-25deg);
+        }
+
+        .profile-melt.is-pressing {
+            cursor: grabbing;
+        }
+
+        .profile-melt.is-fallback .profile-image {
+            transition: transform 0.35s ease, filter 0.35s ease;
+            transform-origin: center;
+        }
+
+        .profile-melt.is-fallback:hover .profile-image {
+            transform: scale(1.025, 1.07) skewY(-0.7deg);
+            filter: saturate(1.12) contrast(0.96) blur(0.7px);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .profile-melt.is-fallback .profile-image {
+                transition: none;
+            }
         }
 
         .header-text h1 {
@@ -455,7 +559,10 @@
                 gap: 1.5rem;
             }
             .header-links { justify-content: center; }
-            .profile-image { width: 160px; }
+            .profile-melt {
+                width: 160px;
+                flex-basis: 160px;
+            }
             .header-text h1 { font-size: 2.4rem; }
             .timeline {
                 padding-left: 0;
@@ -492,7 +599,10 @@
 
         <header>
             <div class="header-content">
-                <img src="assets/me.jpeg" alt="Sagi Polaczek" class="profile-image">
+                <div class="profile-melt">
+                    <img src="assets/me.jpeg" alt="Sagi Polaczek" class="profile-image">
+                    <canvas class="profile-melt-canvas" aria-hidden="true"></canvas>
+                </div>
                 <div class="header-text">
                     <h1>Sagi Polaczek</h1>
                     <p class="tagline">
@@ -683,6 +793,8 @@
             <p>Designed by Sagi Polaczek.<br>Like this layout? Feel free to use it! Just a mention would be appreciated.</p>
         </footer>
     </div>
+
+    <script src="assets/melt-effect.js?v=5" defer></script>
 
 </body>
 </html>
