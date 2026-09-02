@@ -610,7 +610,7 @@
             .header-links { justify-content: center; }
             .profile-melt {
                 width: 160px;
-                flex-basis: 160px;
+                flex: 0 0 auto;
             }
             .header-text h1 { font-size: 2.4rem; }
             .timeline {
@@ -627,18 +627,24 @@
             }
             .tl-dot { display: none; }
 
-            /* Publications: compact horizontal layout on mobile */
+            /* Publications: compact, uncropped widescreen previews on mobile */
             .tl-entry.pub .tl-main {
                 gap: 12px;
                 align-items: flex-start;
             }
             .tl-entry.pub .pub-preview {
-                flex: 0 0 96px;
+                flex: 0 0 112px;
+                width: 112px;
             }
             .tl-entry.pub .tl-logo {
-                flex: 0 0 96px;
-                width: 96px;
-                height: 96px;
+                flex: 0 0 auto;
+                width: 112px;
+                height: auto;
+                aspect-ratio: 16 / 9;
+            }
+            .tl-entry.pub .tl-logo img,
+            .tl-entry.pub .tl-logo video {
+                object-fit: contain;
             }
         }
     </style>
@@ -655,7 +661,7 @@
                 <div class="header-text">
                     <h1>Sagi Polaczek</h1>
                     <p class="tagline">
-                        I'm a Ph.D. student in Computer Science at Tel Aviv University, advised by <a href="https://danielcohenor.com/" target="_blank">Daniel Cohen-Or</a>. Doing cool AI stuff &mdash; video diffusion models, SVGs, and more. Grateful for everyone I've worked with and learned from. Excited for what's next :)
+                        I'm a Ph.D. student in Computer Science at Tel Aviv University, advised by <a href="https://danielcohenor.com/" target="_blank">Daniel Cohen-Or</a>. Doing cool AI stuff - video diffusion models, SVGs, and more.
                     </p>
                     <div class="header-links">
                         <a href="mailto:sagi.polaczek@gmail.com" aria-label="Email: sagi.polaczek@gmail.com" title="Email">
