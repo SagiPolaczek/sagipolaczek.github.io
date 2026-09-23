@@ -940,7 +940,7 @@
     function registerThumbnail(thumbnail) {
         thumbnail.tabIndex = 0;
         thumbnail.setAttribute('role', 'button');
-        thumbnail.setAttribute('aria-label', 'Trigger an accumulating earthquake crack');
+        if (!thumbnail.hasAttribute('aria-label')) thumbnail.setAttribute('aria-label', 'Trigger an accumulating earthquake crack');
 
         thumbnail.addEventListener('click', (event) => {
             const point = pointFromClick(thumbnail, event);

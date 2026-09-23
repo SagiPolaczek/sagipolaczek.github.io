@@ -48,6 +48,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <link rel="stylesheet" href="assets/ambient-assets.css?v=2">
+
     <style>
         :root {
             --bg: #faf9f7;
@@ -343,6 +345,15 @@
         .tl-logo.logo-dark img {
             filter: invert(1);
         }
+        .tl-entry.upcoming .tl-logo {
+            background: #f1eeea;
+            border: 1px dashed #b9afa6;
+            box-shadow: none;
+        }
+        .tl-entry.upcoming .tl-dot {
+            border-color: #9a8c80;
+            border-style: dashed;
+        }
 
         /* Publication entries — distinct from jobs */
         .tl-entry.pub {
@@ -408,6 +419,7 @@
             left: 0;
             z-index: 0;
             display: block;
+            max-width: 100%;
             pointer-events: none;
             filter: drop-shadow(0 0 0.45px rgba(0,0,0,0.35));
         }
@@ -649,7 +661,12 @@
         }
     </style>
 </head>
-<body>
+<body class="has-ambient-assets">
+    <div class="ambient-assets" data-ambient-assets aria-hidden="true">
+        <canvas class="ambient-assets__canvas"></canvas>
+        <div class="ambient-assets__veil"></div>
+        <div class="ambient-assets__media" hidden></div>
+    </div>
     <div class="container">
 
         <header>
@@ -661,7 +678,7 @@
                 <div class="header-text">
                     <h1>Sagi Polaczek</h1>
                     <p class="tagline">
-                        I'm a Ph.D. student in Computer Science at Tel Aviv University, advised by <a href="https://danielcohenor.com/" target="_blank">Daniel Cohen-Or</a>. Doing cool AI stuff - video diffusion models, SVGs, and more.
+                        I'm a Ph.D. student in Computer Science at Tel Aviv University, advised by <a href="https://danielcohenor.com/" target="_blank">Daniel Cohen-Or</a>. Doing cool AI stuff - video diffusion models, SVGs, and now exploring physical AI.
                     </p>
                     <div class="header-links">
                         <a href="mailto:sagi.polaczek@gmail.com" aria-label="Email: sagi.polaczek@gmail.com" title="Email">
@@ -687,12 +704,27 @@
         <main>
             <div class="timeline">
 
+                <!-- ── Coming soon ── -->
+                <div class="tl-entry upcoming" data-upcoming="true">
+                    <div class="tl-date">Coming soon</div>
+                    <div class="tl-dot"></div>
+                    <div class="tl-main">
+                        <div class="tl-logo" data-logo-morph="coming-soon" tabindex="0" role="button" aria-label="Show the mystery career update in 3D">
+                            <img src="assets/logos/coming-soon.svg" alt="Coming soon">
+                        </div>
+                        <div class="tl-body">
+                            <p class="tl-role">A new chapter</p>
+                            <p class="tl-desc">Still under wraps. More soon.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ── The Attention Triangle ── -->
                 <div class="tl-entry pub" data-date="2026.09">
                     <div class="tl-dot"></div>
                     <div class="tl-main">
                         <div class="pub-preview">
-                            <div class="tl-logo">
+                            <div class="tl-logo" data-logo-morph="paper" data-paper-title="attention-triangle" tabindex="0" role="button" aria-label="Show The Attention Triangle on the 3D scroll; activate for the crack effect">
                                 <video src="assets/AttentionTriangle_teaser.mp4" autoplay muted loop playsinline preload="metadata"></video>
                             </div>
                             <div class="tl-date">Sep 2026</div>
@@ -714,7 +746,7 @@
                     <div class="tl-date">2026 &ndash; present</div>
                     <div class="tl-dot"></div>
                     <div class="tl-main">
-                        <div class="tl-logo">
+                        <div class="tl-logo" data-logo-morph="tau" tabindex="0" role="button" aria-label="Show Tel Aviv University in 3D">
                             <img src="assets/logos/tau_logo.png" alt="Tel Aviv University">
                         </div>
                         <div class="tl-body">
@@ -728,7 +760,7 @@
                     <div class="tl-dot"></div>
                     <div class="tl-main">
                         <div class="pub-preview">
-                            <div class="tl-logo">
+                            <div class="tl-logo" data-logo-morph="paper" data-paper-title="linear-semantics" tabindex="0" role="button" aria-label="Show Linear Semantics on the 3D scroll; activate for the crack effect">
                                 <video src="assets/LinearSemantics_teaser.mp4" autoplay muted loop playsinline preload="metadata"></video>
                             </div>
                             <div class="tl-date">Apr 2026</div>
@@ -750,7 +782,7 @@
                     <div class="tl-dot"></div>
                     <div class="tl-main">
                         <div class="pub-preview">
-                            <div class="tl-logo">
+                            <div class="tl-logo" data-logo-morph="paper" data-paper-title="sync-lora" tabindex="0" role="button" aria-label="Show Sync-LoRA on the 3D scroll; activate for the crack effect">
                                 <video src="assets/SyncLoRA_teaser.mp4" autoplay muted loop playsinline preload="metadata"></video>
                             </div>
                             <div class="tl-date">Dec 2025</div>
@@ -772,7 +804,7 @@
                     <div class="tl-date">2025 &ndash; 2026</div>
                     <div class="tl-dot"></div>
                     <div class="tl-main">
-                        <div class="tl-logo" style="padding:0;">
+                        <div class="tl-logo" style="padding:0;" data-logo-morph="marz" tabindex="0" role="button" aria-label="Show MARZ in 3D">
                             <img src="assets/logos/marz_logo.jpg" alt="MARZ" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
                         </div>
                         <div class="tl-body">
@@ -787,7 +819,7 @@
                     <div class="tl-dot"></div>
                     <div class="tl-main">
                         <div class="pub-preview">
-                            <div class="tl-logo">
+                            <div class="tl-logo" data-logo-morph="paper" data-paper-title="neuralsvg" tabindex="0" role="button" aria-label="Show NeuralSVG on the 3D scroll; activate for the crack effect">
                                 <img src="assets/NeuralSVG_teaser.png" alt="NeuralSVG" loading="lazy">
                             </div>
                             <div class="tl-date">Jan 2025</div>
@@ -809,7 +841,7 @@
                     <div class="tl-date">2023 &ndash; 2026</div>
                     <div class="tl-dot"></div>
                     <div class="tl-main">
-                        <div class="tl-logo">
+                        <div class="tl-logo" data-logo-morph="tau" tabindex="0" role="button" aria-label="Show Tel Aviv University in 3D">
                             <img src="assets/logos/tau_logo.png" alt="Tel Aviv University">
                         </div>
                         <div class="tl-body">
@@ -823,7 +855,7 @@
                     <div class="tl-date">2022 &ndash; 2025</div>
                     <div class="tl-dot"></div>
                     <div class="tl-main">
-                        <div class="tl-logo">
+                        <div class="tl-logo" data-logo-morph="ibm" tabindex="0" role="button" aria-label="Show IBM in 3D">
                             <img src="assets/logos/ibm_logo.svg" alt="IBM">
                         </div>
                         <div class="tl-body">
@@ -838,7 +870,7 @@
                     <div class="tl-date">2021 &ndash; 2022</div>
                     <div class="tl-dot"></div>
                     <div class="tl-main">
-                        <div class="tl-logo">
+                        <div class="tl-logo" data-logo-morph="cisco" tabindex="0" role="button" aria-label="Show Cisco in 3D">
                             <img src="assets/logos/cisco_logo.svg" alt="Cisco">
                         </div>
                         <div class="tl-body">
@@ -853,7 +885,7 @@
                     <div class="tl-date">2019 &ndash; 2023</div>
                     <div class="tl-dot"></div>
                     <div class="tl-main">
-                        <div class="tl-logo">
+                        <div class="tl-logo" data-logo-morph="tau" tabindex="0" role="button" aria-label="Show Tel Aviv University in 3D">
                             <img src="assets/logos/tau_logo.png" alt="Tel Aviv University">
                         </div>
                         <div class="tl-body">
@@ -868,9 +900,11 @@
 
         <footer>
             <p>Designed by Sagi Polaczek.<br>Like this layout? Feel free to use it! Just a mention would be appreciated.</p>
+            <button class="ambient-motion-toggle" type="button" aria-pressed="false" hidden>Pause background motion</button>
         </footer>
     </div>
 
+    <script type="module" src="assets/ambient-assets.js?v=7"></script>
     <script src="assets/melt-effect.js?v=5" defer></script>
     <script src="assets/earthquake-cracks.js?v=7" defer></script>
 

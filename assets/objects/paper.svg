@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400" viewBox="0 0 300 400">
+  <defs>
+    <linearGradient id="sheet"><stop stop-color="#8b4a22"/><stop offset=".09" stop-color="#c59b61"/><stop offset=".35" stop-color="#ead09a"/><stop offset=".78" stop-color="#dfbd82"/><stop offset="1" stop-color="#8b4a22"/></linearGradient>
+    <linearGradient id="roll" x2="0" y2="1"><stop stop-color="#8d5a2c"/><stop offset=".35" stop-color="#eddaae"/><stop offset=".65" stop-color="#d9b982"/><stop offset="1" stop-color="#68411e"/></linearGradient>
+  </defs>
+  <path fill="url(#sheet)" stroke="#986138" stroke-width="2" d="M24 51 L276 51 273 79 279 103 274 117 280 140 274 163 278 179 272 204 279 226 275 247 279 275 273 302 278 336 273 352 27 351 23 332 29 313 23 286 27 263 22 244 28 223 23 201 29 182 24 161 28 141 22 119 27 98 23 75Z"/>
+  <path fill="url(#roll)" stroke="#74441f" stroke-width="2" d="M23 30 Q147 40 277 30 L280 65 Q151 73 20 65Z M21 335 Q152 346 279 335 L276 371 Q148 381 24 372Z"/>
+</svg>
