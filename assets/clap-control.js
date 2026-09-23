@@ -7,6 +7,9 @@ const listenButton = control.querySelector('.clap-control__listen');
 const manualButton = control.querySelector('.clap-control__manual');
 const status = control.querySelector('.clap-control__status');
 const steps = [...control.querySelectorAll('.clap-control__steps span')];
+const meter = control.querySelector('.clap-control__meter');
+const meterFill = control.querySelector('.clap-control__meter-fill');
+const meterLabel = control.querySelector('.clap-control__meter-label');
 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
 const canListen = !!(window.isSecureContext && navigator.mediaDevices?.getUserMedia &&
     AudioContextClass && window.AudioWorkletNode);
@@ -17,7 +20,7 @@ const logoControls = [...document.querySelectorAll('[data-logo-morph]:not([data-
 let state = 'off';
 let microphoneSession = 0;
 let revealSession = 0;
-let stream, audioContext, source, processor, timeout, calibration;
+let stream, audioContext, source, processor, timeout;
 let backgroundPromise, background;
 
 function setLogoControls(enabled) {
@@ -45,6 +48,7 @@ function setState(value, message) {
     listenButton.textContent = activeMic ? 'Stop listening' : 'Enable clap detection';
     listenButton.disabled = !canListen || value === 'loading';
     manualButton.disabled = value === 'loading';
+    meter.hidden = !['calibrating', 'listening'].includes(value);
     if (message) status.textContent = message;
 }
 
@@ -55,8 +59,7 @@ function clapProgress(count) {
 function stopMicrophone() {
     microphoneSession++;
     clearTimeout(timeout);
-    clearTimeout(calibration);
-    if (processor) { processor.port.onmessage = null; processor.disconnect(); }
+    if (processor) { processor.port.onmessage = null; processor.onprocessorerror = null; processor.disconnect(); }
     source?.disconnect();
     stream?.getTracks().forEach(track => { track.onended = null; track.stop(); });
     if (audioContext) {
@@ -69,6 +72,8 @@ function stopMicrophone() {
 function stopListening(message = 'Listening stopped. The background is still off.') {
     stopMicrophone();
     clapProgress(0);
+    meterFill.style.transform = 'scaleX(0)';
+    meterLabel.textContent = 'Microphone on';
     setState('off', message);
 }
 
@@ -137,7 +142,7 @@ async function startListening() {
         const resumed = context.resume();
         resumed.catch(() => {});
         const grantedStream = await navigator.mediaDevices.getUserMedia({audio: {
-            echoCancellation: false, noiseSuppression: false, autoGainControl: false
+            echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1
         }, video: false});
         if (session !== microphoneSession) {
             grantedStream.getTracks().forEach(track => track.stop());
@@ -146,16 +151,30 @@ async function startListening() {
         stream = grantedStream;
         await resumed;
         if (session !== microphoneSession) return;
-        await context.audioWorklet.addModule(new URL('./clap-processor.js?v=1', import.meta.url));
+        await context.audioWorklet.addModule(new URL('./clap-processor.js?v=2', import.meta.url));
         if (session !== microphoneSession) return;
 
-        processor = new AudioWorkletNode(context, 'double-clap');
+        processor = new AudioWorkletNode(context, 'double-clap', {channelCount: 1, channelCountMode: 'explicit', outputChannelCount: [1]});
         source = context.createMediaStreamSource(stream);
+        let lastSound = performance.now();
         processor.port.onmessage = ({data}) => {
-            if (session !== microphoneSession || state !== 'listening') return;
+            if (session !== microphoneSession) return;
+            if (data.ready && state === 'calibrating') {
+                setState('listening', 'Clap twice, about half a second apart.');
+            }
+            if (typeof data.level === 'number') {
+                meterFill.style.transform = `scaleX(${data.level})`;
+                if (data.level > .08) lastSound = performance.now();
+                meterLabel.textContent = performance.now() - lastSound > 3500 ? 'No sound yet — check your microphone' : 'Microphone on';
+                return;
+            }
+            if (state !== 'listening' || typeof data.count !== 'number') return;
             clapProgress(data.count);
             if (data.count === 2) revealBackground(true);
             else status.textContent = data.count === 1 ? 'One clap heard. One more!' : 'Clap twice, about half a second apart.';
+        };
+        processor.onprocessorerror = () => {
+            if (session === microphoneSession) stopListening('Clap detection stopped. Try again, or show 3D below.');
         };
         source.connect(processor);
         processor.connect(context.destination); // The processor only outputs silence.
@@ -168,9 +187,6 @@ async function startListening() {
             }
         };
         setState('calibrating', 'Getting ready… just a moment.');
-        calibration = setTimeout(() => {
-            if (session === microphoneSession) setState('listening', 'Clap twice, about half a second apart.');
-        }, 600);
         clearTimeout(timeout);
         timeout = setTimeout(() => stopListening('No double clap heard. Try again, or show 3D below.'), 30000);
     } catch (error) {

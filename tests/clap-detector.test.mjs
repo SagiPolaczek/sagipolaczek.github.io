@@ -40,3 +40,22 @@ test('soft claps above the noise floor still count', () => {
 test('initial microphone startup sounds are ignored', () => {
     assert.deepEqual(detect([{at: 100, rms: .1}, {at: 300, rms: .12}]), []);
 });
+
+test('quiet microphone claps are detected relative to the room noise', () => {
+    assert.deepEqual(detect([{at: 800, rms: .004}, {at: 1300, rms: .006}], {noise: .0001}), [1, 2]);
+});
+test('a quick natural double clap counts', () => {
+    assert.deepEqual(detect([{at: 800, rms: .08}, {at: 1000, rms: .08}]), [1, 2]);
+});
+test('microphone filtering does not prevent a clap pair', () => {
+    assert.deepEqual(detect([{at: 800, rms: .08, highFrequency: .3}, {at: 1300, rms: .08, highFrequency: .3}]), [1, 2]);
+});
+test('claps whose peaks arrive after a partial analysis frame still count', () => {
+    assert.deepEqual(detect([
+        {at: 790, duration: 10, rms: .009}, {at: 800, rms: .08},
+        {at: 1290, duration: 10, rms: .009}, {at: 1300, rms: .08}
+    ]), [1, 2]);
+});
+test('a second clap near the timing boundary can finish decaying', () => {
+    assert.deepEqual(detect([{at: 800, rms: .08}, {at: 1790, rms: .08}]), [1, 2]);
+});

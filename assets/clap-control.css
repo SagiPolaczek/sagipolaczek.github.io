@@ -60,6 +60,9 @@
 .clap-control__steps { display: flex; justify-content: center; gap: 12px; margin: 21px 0 12px; }
 .clap-control__steps span { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%; color: var(--text-sub); transition: background .15s, color .15s; }
 .clap-control__steps span.is-heard { background: var(--accent); border-color: var(--accent); color: #fff; }
+.clap-control__meter { margin: 0 0 14px; color: var(--text-sub); font-size: 11px; text-align: center; }
+.clap-control__meter-track { display: block; margin-top: 6px; height: 4px; overflow: hidden; border-radius: 4px; background: var(--border-light); }
+.clap-control__meter-fill { display: block; width: 100%; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
 .clap-control__status { min-height: 42px; margin-bottom: 15px; text-align: center; font-size: 13px; color: var(--text-sub); }
 .clap-control__listen, .clap-control__manual { display: block; width: 100%; min-height: 44px; border-radius: 7px; }
 .clap-control__listen { padding: 9px 12px; border: 1px solid var(--accent); background: var(--accent); color: #fff; }

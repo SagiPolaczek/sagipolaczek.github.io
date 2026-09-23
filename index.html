@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="assets/ambient-assets.css?v=3">
-    <link rel="stylesheet" href="assets/clap-control.css?v=1">
+    <link rel="stylesheet" href="assets/clap-control.css?v=2">
 
     <style>
         :root {
@@ -912,6 +912,10 @@
             <h2 id="clap-title">Two claps. A new dimension.</h2>
             <p class="clap-control__intro">Enable your microphone, then clap twice to reveal the 3D background.</p>
             <div class="clap-control__steps" aria-hidden="true"><span>1</span><span>2</span></div>
+            <div class="clap-control__meter" hidden>
+                <span class="clap-control__meter-label">Microphone on</span>
+                <span class="clap-control__meter-track" aria-hidden="true"><span class="clap-control__meter-fill"></span></span>
+            </div>
             <p class="clap-control__status" id="clap-status" role="status" aria-live="polite" aria-atomic="true">The background stays off until you choose.</p>
             <button class="clap-control__listen" type="button">Enable clap detection</button>
             <button class="clap-control__manual" type="button">Show 3D without microphone</button>
@@ -923,7 +927,7 @@
             <span class="clap-control__badge" aria-hidden="true">OFF</span>
         </button>
     </aside>
-    <script type="module" src="assets/clap-control.js?v=1"></script>
+    <script type="module" src="assets/clap-control.js?v=2"></script>
     <script src="assets/melt-effect.js?v=5" defer></script>
     <script src="assets/earthquake-cracks.js?v=7" defer></script>
 
