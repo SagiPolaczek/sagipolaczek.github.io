@@ -1,0 +1,77 @@
+.clap-control {
+    position: fixed;
+    z-index: 20;
+    right: max(24px, env(safe-area-inset-right));
+    bottom: max(22px, env(safe-area-inset-bottom));
+    color: var(--text);
+    font: 400 14px/1.5 'Source Sans 3', -apple-system, sans-serif;
+}
+.clap-control[hidden], .clap-control [hidden] { display: none; }
+.clap-control button { font: inherit; cursor: pointer; }
+.clap-control button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.clap-control button:disabled { cursor: wait; opacity: .65; }
+.clap-control__trigger {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+    margin-left: auto;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    background: #faf9f7;
+    color: var(--text-sub);
+    box-shadow: 0 3px 18px #2d2a2609;
+    transition: border-color .2s, box-shadow .2s;
+}
+.clap-control__trigger:hover { border-color: var(--accent); box-shadow: 0 4px 20px #2d2a2610; }
+.clap-control__icon { color: var(--accent); flex-shrink: 0; }
+.clap-control__badge { font-size: 10px; font-weight: 600; letter-spacing: .08em; padding-left: 10px; border-left: 1px solid var(--border-light); }
+.clap-control[data-state="listening"] .clap-control__badge,
+.clap-control[data-state="on"] .clap-control__badge { color: var(--accent); }
+.clap-control__panel {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 12px);
+    width: 316px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 100px);
+    overflow-y: auto;
+    padding: 25px 24px 20px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #faf9f7;
+    box-shadow: 0 12px 48px #2d2a2614;
+}
+.clap-control__close {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: none;
+    color: var(--text-sub);
+    font-size: 24px !important;
+}
+.clap-control__eyebrow { margin-bottom: 9px; color: var(--accent); font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.clap-control__panel h2 { font: 500 27px/1.1 'Cormorant Garamond', Georgia, serif; letter-spacing: -.02em; margin: 0 0 12px; }
+.clap-control__intro { color: var(--text-sub); }
+.clap-control__steps { display: flex; justify-content: center; gap: 12px; margin: 21px 0 12px; }
+.clap-control__steps span { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 50%; color: var(--text-sub); transition: background .15s, color .15s; }
+.clap-control__steps span.is-heard { background: var(--accent); border-color: var(--accent); color: #fff; }
+.clap-control__status { min-height: 42px; margin-bottom: 15px; text-align: center; font-size: 13px; color: var(--text-sub); }
+.clap-control__listen, .clap-control__manual { display: block; width: 100%; min-height: 44px; border-radius: 7px; }
+.clap-control__listen { padding: 9px 12px; border: 1px solid var(--accent); background: var(--accent); color: #fff; }
+.clap-control__listen:hover { background: var(--accent-light); }
+.clap-control__manual { margin-top: 5px; padding: 8px 0; border: 0; background: transparent; color: var(--accent); font-size: 13px !important; text-decoration: underline; text-underline-offset: 3px; }
+.clap-control__privacy { margin-top: 12px; border-top: 1px solid var(--border-light); padding-top: 13px; font-size: 11px; line-height: 1.5; color: var(--text-sub); }
+body:has(.clap-control:not([hidden])) { padding-bottom: 76px; }
+@media (max-width: 700px) {
+    .clap-control { right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); }
+    .clap-control__trigger { min-height: 44px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .clap-control *, .clap-control__trigger { transition: none; }
+}
+@media print { .clap-control { display: none; } }

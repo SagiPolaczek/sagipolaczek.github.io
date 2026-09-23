@@ -9,7 +9,7 @@ const ease=v=>{v=clamp(v);return v*v*(3-2*v);};
 const HOVER_DURATION=520;
 const SPIN_SECONDS=36;
 
-async function mountBackground(){
+export async function mountBackground({onUnavailable=()=>{}}={}){
     if(!host)return;
     const reduced=matchMedia('(prefers-reduced-motion: reduce)');
     // Touch devices and narrow layouts select assets through scrolling only.
@@ -26,7 +26,7 @@ async function mountBackground(){
     const indexFor=selection=>descriptors.findIndex(asset=>asset.key===selection.key);
     let renderer,scene,camera,group,points,assets;
     let target=0,from=0,to=0,blendAmount=0,mode='scroll',returnMode='scroll',requestedKey=null;
-    let userPaused=false,frame=0,lastFrame=0,transition=false,started=0;
+    let enabled=false,userPaused=false,frame=0,lastFrame=0,transition=false,started=0;
     let hoveredItem=null,focusedItem=null,pointerPosition=null;
     let current,currentColors,starts,startColors,meshStarts,startPointOpacity=0;
     let width=innerWidth,height=innerHeight,worldHeight=12*height/width,layoutDirty=true;
@@ -34,7 +34,7 @@ async function mountBackground(){
     const cursor={x:0,y:0},smooth={x:0,y:0};
     const stopped=()=>userPaused||reduced.matches;
     function syncVideo(){
-        assets?.forEach((asset,i)=>asset.setPlayback?.(i===target&&asset.mesh.material.opacity>.2&&!stopped()&&!document.hidden&&!!renderer));
+        assets?.forEach((asset,i)=>asset.setPlayback?.(enabled&&i===target&&asset.mesh.material.opacity>.2&&!stopped()&&!document.hidden&&!!renderer));
     }
     function refreshMotionButton(){
         const paused=stopped();motionButton.textContent=reduced.matches?'Background motion off':paused?'Resume background motion':'Pause background motion';
@@ -89,7 +89,7 @@ async function mountBackground(){
         if(stopped())layoutDirty=true;
     }
     function select(selection){
-        if(scrollOnly.matches)return;
+        if(!enabled||scrollOnly.matches)return;
         const index=indexFor(selection);if(index<0)return;
         if(mode==='hover'&&requestedKey===selection.key)return;
         requestedKey=selection.key;mode='hover';host.dataset.engaged='true';blendSignature='';
@@ -130,11 +130,12 @@ async function mountBackground(){
     }
     const itemAt=element=>entries.find(item=>item.entry===element?.closest?.('.tl-entry'))||null;
     function syncSelection(fallback=pointerPosition&&!scrollOnly.matches?'cursor':'scroll'){
+        if(!enabled)return;
         const item=focusedItem||hoveredItem;
         if(item)select(item.selection);else resumeDriven(fallback);
     }
     function syncPointer(){
-        if(scrollOnly.matches)return;
+        if(!enabled||scrollOnly.matches)return;
         hoveredItem=pointerPosition?itemAt(document.elementFromPoint(pointerPosition.x,pointerPosition.y)):null;
         syncSelection('scroll');
     }
@@ -150,11 +151,11 @@ async function mountBackground(){
     for(const item of entries){
         const {entry,source,selection}=item;
         entry.addEventListener('pointerenter',event=>{
-            if(scrollOnly.matches||event.pointerType==='touch')return;
+            if(!enabled||scrollOnly.matches||event.pointerType==='touch')return;
             pointerPosition={x:event.clientX,y:event.clientY};hoveredItem=item;syncSelection();
         });
         entry.addEventListener('pointerleave',event=>{
-            if(scrollOnly.matches||event.pointerType==='touch')return;
+            if(!enabled||scrollOnly.matches||event.pointerType==='touch')return;
             hoveredItem=itemAt(event.relatedTarget);syncSelection();
         });
         entry.addEventListener('focusin',event=>{if(!scrollOnly.matches&&event.target.matches(':focus-visible')){focusedItem=item;syncSelection();}});
@@ -163,7 +164,7 @@ async function mountBackground(){
         if(source.dataset.logoMorph!=='paper')source.addEventListener('keydown',event=>{if(!scrollOnly.matches&&(event.key==='Enter'||event.key===' ')){event.preventDefault();select(selection);}});
     }
     window.addEventListener('pointermove',event=>{
-        if(scrollOnly.matches||event.pointerType==='touch')return;
+        if(!enabled||scrollOnly.matches||event.pointerType==='touch')return;
         const x=clamp(event.clientX/width*2-1,-1,1),y=clamp(event.clientY/height*2-1,-1,1);
         pointerPosition={x:event.clientX,y:event.clientY};focusedItem=null;
         if(!stopped()){cursor.x=x;cursor.y=y;wake();}
@@ -191,7 +192,7 @@ async function mountBackground(){
         return Math.min(12*.48/boundX,worldHeight*.50/boundY);
     }
     function draw(now){
-        frame=0;if(document.hidden||!renderer)return;
+        frame=0;if(!enabled||document.hidden||!renderer)return;
         const dt=Math.min((now-lastFrame)/1000,.05);lastFrame=now;
         if(mode==='scroll'||mode==='cursor')applyDrivenBlend();else updateHoverTransition(now);
         const fit=desiredScale();
@@ -218,7 +219,7 @@ async function mountBackground(){
         if(scrollOnly.matches||now-hudAt>160){hudAt=now;host.dataset.yaw=group.rotation.y.toFixed(3);host.dataset.pitch=group.rotation.x.toFixed(3);host.dataset.offsetX=group.position.x.toFixed(3);host.dataset.offsetY=group.position.y.toFixed(3);host.dataset.scale=scale.toFixed(3);}
         if(!stopped()||transition||assets.some(asset=>asset.videoPlaying))wake();
     }
-    function wake(){if(!frame&&renderer&&assets&&!document.hidden)frame=requestAnimationFrame(draw);}
+    function wake(){if(enabled&&!frame&&renderer&&assets&&!document.hidden)frame=requestAnimationFrame(draw);}
     function resize(){
         width=host.clientWidth||innerWidth;height=host.clientHeight||innerHeight;worldHeight=12*height/width;
         if(!renderer)return;
@@ -248,10 +249,19 @@ async function mountBackground(){
         scale=desiredScale();group.scale.setScalar(scale);group.rotation.set(.08,-.16,0,'YXZ');
         resize();new ResizeObserver(resize).observe(host);new ResizeObserver(measureTimeline).observe(document.querySelector('.container'));document.fonts?.ready.then(measureTimeline);
         document.addEventListener('visibilitychange',()=>{lastFrame=performance.now();syncVideo();wake();});
-        canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();host.classList.remove('is-ready');host.dataset.ready='false';renderer=null;syncVideo();motionButton.hidden=true;});
-        host.classList.add('is-ready');host.dataset.ready='true';host.dataset.artwork='ready';motionButton.hidden=false;syncVideo();wake();
+        canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();setEnabled(false);host.classList.remove('is-ready');host.dataset.ready='false';renderer=null;onUnavailable();});
+        host.classList.add('is-ready');host.dataset.ready='true';host.dataset.artwork='ready';motionButton.hidden=true;
+        return {setEnabled};
     }catch(error){
-        renderer?.dispose();renderer=null;assets?.forEach(asset=>asset.setPlayback?.(false));host.classList.remove('is-ready');host.dataset.ready='false';motionButton.hidden=true;console.warn('Decorative 3D background unavailable:',error);
+        renderer?.dispose();renderer=null;assets?.forEach(asset=>asset.setPlayback?.(false));host.classList.remove('is-ready');host.dataset.ready='false';motionButton.hidden=true;throw error;
+    }
+    function setEnabled(value){
+        if(value&&!renderer)throw new Error('The 3D renderer is unavailable.');
+        enabled=value;host.dataset.enabled=String(value);
+        document.body.classList.toggle('has-ambient-assets',value);
+        motionButton.hidden=!value;
+        if(value){lastFrame=performance.now();refreshInputMode();resize();}
+        else{cancelAnimationFrame(frame);frame=0;}
+        syncVideo();wake();
     }
 }
-mountBackground();

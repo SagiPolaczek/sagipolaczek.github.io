@@ -9,7 +9,8 @@
     transition: opacity 1.2s ease;
     contain: strict;
 }
-.ambient-assets.is-ready { opacity: 1; }
+.ambient-assets.is-ready[data-enabled="true"] { opacity: 1; }
+.ambient-assets[data-enabled="false"] { visibility: hidden; }
 .ambient-assets__canvas {
     display: block;
     width: 100%;
@@ -29,7 +30,7 @@
     background: linear-gradient(90deg, #faf9f755 0%, #faf9f722 36%, #faf9f700 78%);
 }
 .ambient-assets__media { display: none; }
-[data-logo-morph] { cursor: pointer; }
+.has-ambient-assets [data-logo-morph], .tl-entry.pub [data-logo-morph] { cursor: pointer; }
 [data-logo-morph]:focus-visible { outline: 2px solid #8b4049; outline-offset: 4px; }
 .ambient-motion-toggle {
     margin-top: 12px;
