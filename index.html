@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="assets/ambient-assets.css?v=3">
-    <link rel="stylesheet" href="assets/clap-control.css?v=2">
+    <link rel="stylesheet" href="assets/painting-buttons.css?v=4">
 
     <style>
         :root {
@@ -115,6 +115,10 @@
             touch-action: none;
         }
 
+        .profile-melt:not([data-morph-enabled="true"]) {
+            cursor: default;
+        }
+
         .profile-image {
             display: block;
             width: 100%;
@@ -135,11 +139,11 @@
             z-index: 1;
         }
 
-        .profile-melt.is-ready .profile-image {
+        .profile-melt.is-ready:where([data-morph-enabled="true"]) .profile-image {
             opacity: 0;
         }
 
-        .profile-melt.is-ready .profile-melt-canvas {
+        .profile-melt.is-ready:where([data-morph-enabled="true"]) .profile-melt-canvas {
             opacity: 1;
         }
 
@@ -204,7 +208,7 @@
             transform-origin: center;
         }
 
-        .profile-melt.is-fallback:hover .profile-image {
+        .profile-melt.is-fallback:where([data-morph-enabled="true"]:hover) .profile-image {
             transform: scale(1.025, 1.07) skewY(-0.7deg);
             filter: saturate(1.12) contrast(0.96) blur(0.7px);
         }
@@ -672,9 +676,13 @@
 
         <header>
             <div class="header-content">
-                <div class="profile-melt">
+                <div class="profile-paintings">
+                  <div class="profile-melt" data-morph-enabled="false">
                     <img src="assets/me.jpeg" alt="Sagi Polaczek" class="profile-image">
                     <canvas class="profile-melt-canvas" aria-hidden="true"></canvas>
+                    <div class="painting-hotspots" aria-label="Paintings in the photograph" hidden></div>
+                  </div>
+                  <span class="painting-feedback" role="status" aria-live="polite" aria-atomic="true"></span>
                 </div>
                 <div class="header-text">
                     <h1>Sagi Polaczek</h1>
@@ -905,30 +913,8 @@
         </footer>
     </div>
 
-    <aside class="clap-control" data-clap-control data-state="off" aria-label="3D background" hidden>
-        <section class="clap-control__panel" id="clap-panel" aria-labelledby="clap-title" hidden>
-            <button class="clap-control__close" type="button" aria-label="Close and stop listening">&times;</button>
-            <p class="clap-control__eyebrow">A little interaction</p>
-            <h2 id="clap-title">Two claps. A new dimension.</h2>
-            <p class="clap-control__intro">Enable your microphone, then clap twice to reveal the 3D background.</p>
-            <div class="clap-control__steps" aria-hidden="true"><span>1</span><span>2</span></div>
-            <div class="clap-control__meter" hidden>
-                <span class="clap-control__meter-label">Microphone on</span>
-                <span class="clap-control__meter-track" aria-hidden="true"><span class="clap-control__meter-fill"></span></span>
-            </div>
-            <p class="clap-control__status" id="clap-status" role="status" aria-live="polite" aria-atomic="true">The background stays off until you choose.</p>
-            <button class="clap-control__listen" type="button">Enable clap detection</button>
-            <button class="clap-control__manual" type="button">Show 3D without microphone</button>
-            <p class="clap-control__privacy">Audio is processed on your device, never recorded or sent. Listening stops after two claps or 30 seconds.</p>
-        </section>
-        <button class="clap-control__trigger" type="button" aria-expanded="false" aria-controls="clap-panel">
-            <svg class="clap-control__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z M4 7.5l8 4.5 8-4.5 M12 12v9"/></svg>
-            <span class="clap-control__label">Clap twice for 3D</span>
-            <span class="clap-control__badge" aria-hidden="true">OFF</span>
-        </button>
-    </aside>
-    <script type="module" src="assets/clap-control.js?v=2"></script>
-    <script src="assets/melt-effect.js?v=5" defer></script>
+    <script src="assets/melt-effect.js?v=7" defer></script>
+    <script src="assets/painting-buttons.js?v=4" defer></script>
     <script src="assets/earthquake-cracks.js?v=7" defer></script>
 
 </body>

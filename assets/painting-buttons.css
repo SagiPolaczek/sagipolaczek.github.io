@@ -1,0 +1,117 @@
+.profile-paintings { width: 240px; flex: 0 0 240px; align-self: flex-start; }
+.profile-paintings .profile-melt { width: 100%; touch-action: pan-y; }
+.painting-hotspots { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.painting-hotspots[hidden] { display: none; }
+.painting-button {
+    position: absolute;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--painting-accent);
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    perspective: 450px;
+}
+.painting-button::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: #181711;
+    box-shadow: inset 0 2px 8px #0009;
+    opacity: 0;
+    transition: opacity .16s;
+}
+.painting-button__face {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background-image: url('me.jpeg');
+    background-size: var(--painting-size);
+    background-position: var(--painting-position);
+    background-repeat: no-repeat;
+    opacity: 0;
+    transform: translateY(0) scale(1);
+    transition: opacity .16s, transform .2s cubic-bezier(.2,.8,.3,1), box-shadow .2s;
+    transform-origin: center;
+}
+.painting-button__face::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 1px solid currentColor;
+    background: linear-gradient(135deg, #fff5, transparent 45%);
+    opacity: .28;
+}
+.painting-button__edge {
+    position: absolute;
+    inset: 0;
+    border: 1px solid currentColor;
+    opacity: 0;
+    box-shadow: 0 0 8px color-mix(in srgb, var(--painting-accent) 35%, transparent);
+    transition: opacity .2s;
+    pointer-events: none;
+}
+.profile-paintings:hover .painting-button__edge { opacity: .38; }
+.painting-button:hover::before,
+.painting-button:focus-visible::before,
+.painting-button.is-animating::before,
+.painting-button.is-down::before { opacity: 1; }
+.painting-button:hover .painting-button__face,
+.painting-button:focus-visible .painting-button__face {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.035);
+    box-shadow: 0 4px 7px #0009, 0 0 9px color-mix(in srgb, var(--painting-accent) 35%, transparent);
+}
+.painting-button.is-down .painting-button__face {
+    opacity: 1;
+    transform: translateY(1px) scale(.945);
+    box-shadow: 0 1px 2px #0009;
+    transition-duration: .07s;
+}
+.painting-button.is-animating { z-index: 2; }
+.painting-button.is-animating .painting-button__face { opacity: 1; }
+.painting-button:hover .painting-button__edge,
+.painting-button:focus-visible .painting-button__edge,
+.painting-button.is-animating .painting-button__edge { opacity: .95; }
+.painting-button[aria-pressed="true"] .painting-button__edge {
+    opacity: 1;
+    border-color: var(--painting-accent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--painting-accent) 60%, transparent), inset 0 0 5px color-mix(in srgb, var(--painting-accent) 35%, transparent);
+}
+.painting-button:focus-visible { outline: 2px solid #fff4d1; outline-offset: 3px; }
+.painting-button__ring {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 7px color-mix(in srgb, var(--painting-accent) 45%, transparent);
+}
+.painting-button__spark {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 5px currentColor;
+}
+.profile-melt:has(.painting-button:hover, .painting-button:focus-visible, .painting-button.is-animating, .painting-button.is-down) .profile-melt-canvas { opacity: 0; }
+.profile-melt:has(.painting-button:hover, .painting-button:focus-visible, .painting-button.is-animating, .painting-button.is-down) .profile-image { opacity: 1; transform: none; filter: none; }
+.painting-feedback { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 768px) {
+    .profile-paintings { width: 204px; flex: 0 0 auto; align-self: center; }
+    .painting-button__edge { opacity: .38; }
+}
+@media (hover: none) {
+    .painting-button:hover:not(.is-animating):not(.is-down):not(:focus-visible) .painting-button__face { opacity: 0; transform: none; box-shadow: none; }
+    .painting-button:hover:not(.is-animating):not(.is-down):not(:focus-visible)::before { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .painting-button, .painting-button *, .painting-button::before { transition: none !important; }
+    .painting-button:hover .painting-button__face,
+    .painting-button:focus-visible .painting-button__face,
+    .painting-button.is-down .painting-button__face { transform: none; }
+}

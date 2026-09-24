@@ -95,6 +95,8 @@
     let animationFrame = 0;
     let hoverTarget = 0;
     let strength = 0;
+    let initialized = false;
+    const isEnabled = () => wrapper.dataset.morphEnabled === 'true';
     let lastFrameTime = performance.now();
     const pointer = { x: 0.5, y: 0.5 };
     const pointerTarget = { x: 0.5, y: 0.5 };
@@ -179,6 +181,7 @@
 
     function draw(now) {
         animationFrame = 0;
+        if (!isEnabled() || document.hidden || !wrapper.classList.contains('is-ready')) return;
         resize();
 
         const deltaTime = Math.min((now - lastFrameTime) / 1000, 0.05);
@@ -200,15 +203,17 @@
     }
 
     function requestDraw() {
-        if (!animationFrame) {
+        if (isEnabled() && !document.hidden && wrapper.classList.contains('is-ready') && !animationFrame) {
             animationFrame = requestAnimationFrame(draw);
         }
     }
 
     function updatePointer(event) {
-        if (event.pointerType === 'touch') {
+        if (!isEnabled() || event.pointerType === 'touch') {
             return;
         }
+
+        hoverTarget = event.target.closest('[data-painting]') ? 0 : 1;
 
         const rect = wrapper.getBoundingClientRect();
         pointerTarget.x = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
@@ -222,6 +227,8 @@
     }
 
     function initialize() {
+        if (initialized || !isEnabled() || !image.naturalWidth) return;
+        initialized = true;
         try {
             const contextOptions = {
                 alpha: false,
@@ -267,14 +274,13 @@
             wrapper.classList.add('is-ready');
 
             wrapper.addEventListener('pointerenter', (event) => {
-                if (event.pointerType === 'touch') {
+                if (!isEnabled() || event.pointerType === 'touch') {
                     return;
                 }
 
                 updatePointer(event);
                 pointer.x = pointerTarget.x;
                 pointer.y = pointerTarget.y;
-                hoverTarget = 1;
                 lastFrameTime = performance.now();
                 requestDraw();
             });
@@ -287,7 +293,7 @@
             window.addEventListener('resize', requestDraw, { passive: true });
             canvas.addEventListener('webglcontextlost', (event) => {
                 event.preventDefault();
-                wrapper.classList.remove('is-ready');
+                enableFallback();
                 cancelAnimationFrame(animationFrame);
                 animationFrame = 0;
             });
@@ -297,11 +303,22 @@
         }
     }
 
-    if (image.complete && image.naturalWidth) {
-        initialize();
-    } else {
-        image.addEventListener('load', initialize, { once: true });
+    function resetMotion() {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+        hoverTarget = strength = 0;
+        lastFrameTime = performance.now();
     }
+
+    wrapper.addEventListener('portrait-morph-change', () => {
+        resetMotion();
+        if (isEnabled()) { initialize(); requestDraw(); }
+    });
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) resetMotion();
+        else requestDraw();
+    });
+    image.addEventListener('load', initialize, { once: true });
 })();
 
 (() => {
@@ -443,6 +460,8 @@
     }
 
     function createBubble(event) {
+        if (wrapper.dataset.morphEnabled !== 'true') return;
+        if (event.target.closest('[data-painting]')) return;
         if (event.pointerType === 'mouse' && event.button !== 0) {
             return;
         }
@@ -497,6 +516,19 @@
     wrapper.addEventListener('pointerdown', createBubble);
     wrapper.addEventListener('pointerup', releaseBubble);
     wrapper.addEventListener('pointercancel', releaseBubble);
+    wrapper.addEventListener('portrait-morph-change', () => {
+        if (wrapper.dataset.morphEnabled === 'true') return;
+        if (activeBubble) {
+            cancelAnimationFrame(activeBubble.animationFrame);
+            if (wrapper.hasPointerCapture?.(activeBubble.pointerId)) wrapper.releasePointerCapture(activeBubble.pointerId);
+            activeBubble = null;
+        }
+        wrapper.classList.remove('is-pressing');
+        wrapper.querySelectorAll('.mirror-bubble').forEach(bubble => {
+            bubble.getAnimations().forEach(animation => animation.cancel());
+            bubble.remove();
+        });
+    });
     wrapper.addEventListener('dragstart', (event) => event.preventDefault());
     wrapper.addEventListener('contextmenu', (event) => event.preventDefault());
 })();
